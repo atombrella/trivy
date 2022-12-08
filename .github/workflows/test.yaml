@@ -82,6 +82,21 @@ jobs:
         run: |
           make test-module-integration
 
+  lint-docker:
+    name: Lint Dockerfiles
+    runs-on: ubuntu-latest
+    container:
+      image: aquasec/trivy:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Lint the Dockerfiles 
+        run: |
+          trivy config --quiet /__w/trivy/trivy/Dockerfile
+          trivy config --quiet /__w/trivy/trivy/Dockerfile.canary
+          trivy config --quiet /__w/trivy/trivy/Dockerfile.protoc
+
   build-test:
     name: Build Test
     runs-on: ubuntu-latest
